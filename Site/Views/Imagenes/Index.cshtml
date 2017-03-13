@@ -1,0 +1,59 @@
+﻿@model ClassLibrary.Modelo.Imagen
+
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.12.4.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+
+</head>
+<h2>Index</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Imagen</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.imagenBase64, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.imagenBase64, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.imagenBase64, "", new { @class = "text-danger" })
+            </div>
+            <select id="foo"></select>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script>
+    $(function () {
+        $.getJSON('/Imagenes/mostrar', function (result) {
+            var ddl = $('#foo');
+            ddl.empty();
+            $(result).each(function () {
+                console.log(this.Id);
+                $(document.createElement('option'))
+                    .attr('value', this.id)
+                    .text(this.nombre)
+                    .appendTo(ddl);
+            });
+        });
+    });
+    </script>
